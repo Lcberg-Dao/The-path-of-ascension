@@ -29,7 +29,6 @@ int main()
 		switch (input)
 		{
 		case 0:
-			Destroy_Contact(&con);
 			printf("ÄúÒÑÍË³ö\n");
 			break;
 		case 1:

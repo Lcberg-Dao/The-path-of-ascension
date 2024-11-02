@@ -11,9 +11,7 @@
 #define Address_MAX 30
 #define NUMBER_MAX 12
 #define MAX 100
-
-#define DEFAUL_SZ 3
-#define INC_SZ 2
+#define SZ 
 
 //联系人信息
 typedef struct Message
@@ -25,18 +23,15 @@ typedef struct Message
 	char number[NUMBER_MAX];
 }Message;
 
-//联系人数量(动态)
+//联系人数量
 typedef struct Contact
 {
-	Message* list;//指向存放人信息空间
-	int num;//存放人信息的个数
-	int capacity;//当前通信录最大容量
+	Message list[MAX];
+	int num;
 }Contact;
 
 //通讯录初始化
 void Init_Contact(Contact* pc);
-//销毁通讯录
-void Destroy_Contact(Contact* pc);
 
 //增加联系人信息
 void add_Contact(Contact* pc);
@@ -55,3 +50,10 @@ void show_Contac(Contact* pc);
 
 //排序
 void sort_Contac(Contact* pc);
+
+
+
+
+
+
+

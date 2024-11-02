@@ -2,18 +2,11 @@
 
 #include "Contacts.h"
 
-//动态通讯录初始化
+//通讯录初始化
 void Init_Contact(Contact* pc)
 {
 	pc->num = 0;
-	Message* ptr = (Message*)calloc(DEFAUL_SZ, sizeof(Message));
-	if (pc->list == NULL)
-	{
-		perror("Init_Contact::calloc");
-		return;
-	}
-	pc->list = ptr;
-	pc->capacity = DEFAUL_SZ;
+	memset(pc->list, 0, sizeof(pc->list));
 }
 
 
@@ -35,30 +28,24 @@ int Fide_name(Contact* pc, char* name)
 //增加联系人
 void add_Contact(Contact* pc)
 {
-	if (pc->num == pc->capacity)
+	if (pc->num == MAX)
 	{
-		Message* ptr = (Message*)realloc(pc->list, (pc->capacity + INC_SZ) * sizeof(Message));
-		if (ptr == NULL)
-		{
-			perror("add_Contact::realloc");
-			return;
-		}
-		pc->list = ptr;
-		pc->capacity += INC_SZ;
-		printf("扩展空间成功!\n");
+		printf("联系人列表已满，请清理后添加!\n");
 	}
-
-	printf("请输入姓名:>");
-	scanf("%s", pc->list[pc->num].name);
-	printf("请输入年龄:>");
-	scanf("%d", &(pc->list[pc->num].age));
-	printf("请输入性别:>");
-	scanf("%s", pc->list[pc->num].sex);
-	printf("请输入住址:>");
-	scanf("%s", pc->list[pc->num].address);
-	printf("请输入电话号码:>");
-	scanf("%s", pc->list[pc->num].number);
-	pc->num = pc->num + 1;
+	else
+	{
+		printf("请输入姓名:>");
+		scanf("%s", pc->list[pc->num].name);
+		printf("请输入年龄:>");
+		scanf("%d", &(pc->list[pc->num].age));
+		printf("请输入性别:>");
+		scanf("%s", pc->list[pc->num].sex);
+		printf("请输入住址:>");
+		scanf("%s", pc->list[pc->num].address);
+		printf("请输入电话号码:>");
+		scanf("%s", pc->list[pc->num].number);
+		pc->num = pc->num + 1;
+	}
 }
 
 //删除联系人
@@ -128,7 +115,7 @@ void Lookup_Contact(Contact* pc)
 	char name[NAME_MAX];
 	printf("请输入要查找的联系人姓名:>");
 	scanf("%s", name);
-
+	
 	//查找
 	int ret = Fide_name(pc, name);
 
@@ -154,7 +141,7 @@ void show_Contac(Contact* pc)
 	assert(pc);
 
 	int i = 0;
-	printf("%-10s\t%-10s\t%-10s\t%-10s\t%-10s\n", "姓名", "年龄", "性别", "住址", "电话");
+	printf("%-10s\t%-10s\t%-10s\t%-10s\t%-10s\n","姓名","年龄","性别","住址","电话");
 
 	for (i = 0; i < pc->num; i++)
 	{
@@ -184,15 +171,4 @@ void sort_Contac(Contact* pc)
 		}
 	}
 	printf("姓名由小到大排序成功\n");
-}
-
-
-//销毁通讯录
-void Destroy_Contact(Contact* pc)
-{
-	free(pc->list);
-	pc->list = NULL;
-	pc->capacity = 0;
-	pc->num = 0;
-	pc = NULL;
 }

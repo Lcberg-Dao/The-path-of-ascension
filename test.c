@@ -1,56 +1,62 @@
 #define _CRT_SECURE_NO_WARNINGS 1
 
-#include "Contacts.h"
+#include "game.h"
 
 void menu()
 {
-	printf("***************   菜单   *****************\n");
-	printf("*****  1.add_Contact  2.del_Contact  *****\n");
-	printf("*****  3.revise       4.lookup       *****\n");
-	printf("*****  5.show         6.sort         *****\n");
-	printf("*****  0.exit                        *****\n");
-	printf("******************************************\n");
+	printf("****************************\n");
+	printf("*****    开始游戏-1    *****\n");
+	printf("*****    结束游戏-0    *****\n");
+	printf("****************************\n");
 }
 
-//主函数
+//正式开始游戏
+void game()
+{
+	char hide[Rows][Cols];
+	char show[Rows][Cols];
+	char set1 = '0';
+	char set2 = '.';
+
+	// 布置雷的棋盘初始化
+	initialize_board(hide, Rows, Cols, set1);
+	
+	//排雷棋盘初始化
+	initialize_board(show, Rows, Cols, set2);
+
+	//排雷棋盘打印
+	print_board(show, Row, Col);
+
+	//布置雷
+	layout_tunter(hide, Row, Col, number);
+
+	//排查雷
+	mine(hide, show, Rows, Cols, number);
+}
+
 int main()
 {
 	int input = 0;
-	Contact con;
-	//通讯录初始化
-	Init_Contact(&con);
-
-	do
-	{
-		//开始菜单
+	do {
+		//游戏目录
 		menu();
-		printf("请选择功能:>");
+		srand((unsigned int)time(NULL));
+		printf("是否开始游戏(1/0):");
 		scanf("%d", &input);
 		switch (input)
 		{
-		case 0:
-			printf("您已退出\n");
-			break;
 		case 1:
-			add_Contact(&con);
+			game();
 			break;
-		case 2:
-			del_Contact(&con);
+		case 0:
+			printf("游戏结束\n");
 			break;
-		case 3:
-			revise_Contact(&con);
-			break;
-		case 4:
-			Lookup_Contact(&con);
-			break;
-		case 5:
-			show_Contac(&con);
-			break;
-		case 6:
-			sort_Contac(&con);
+		default:
+			printf("输入无效，请重新输入\n");
 			break;
 		}
 	} while (input);
+
 
 	return 0;
 }
